@@ -1,0 +1,28 @@
+sort=-time
+layer=overlay
+anchor=top-left
+background-color=#0a0a0a
+width=300
+height=100
+margin=15
+padding=16,24
+border-size=2
+border-color=#b0b0b0
+border-radius=8
+icons=1
+max-icon-size=40
+max-visible=5
+default-timeout=3500
+ignore-timeout=1
+font=JetBrainsMono Nerd Font Mono 12
+format=<b>%a</b>  %s\n%b
+text-color=#b0b0b0
+
+[urgency=low]
+border-color=#666666
+
+[urgency=normal]
+border-color=#999999
+
+[urgency=high]
+border-color=#d0d0d0

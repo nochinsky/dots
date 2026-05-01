@@ -1,0 +1,54 @@
+# hyprland + core components
+hyprland
+hyprlock
+waybar
+wofi
+mako
+libnotify
+swaybg
+cliphist
+wl-clipboard
+
+# terminal, editor, file manager — keybind targets
+kitty
+thunar
+btop
+neovim
+
+# screenshots — keybind targets
+grim
+slurp
+
+# media — keybind targets
+playerctl
+brightnessctl
+pavucontrol
+
+# audio — wpctl keybinds + system
+pipewire
+wireplumber
+pipewire-pulse
+pulsemixer
+
+# power profiles — waybar module
+power-profiles-daemon
+
+# auth agent — autostart
+polkit-gnome
+
+# portals — windowrules + hyprland integration
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+
+# theming — env vars (GTK_THEME, QT_STYLE_OVERRIDE, cursors)
+adw-gtk-theme
+gnome-themes-extra
+qt6ct
+qt6-wayland
+dconf
+
+# fonts — waybar CSS
+ttf-jetbrains-mono-nerd
+
+# tray icons — waybar dependency
+libdbusmenu-gtk3

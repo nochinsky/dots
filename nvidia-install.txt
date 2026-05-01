@@ -1,0 +1,54 @@
+# FIRST THING TO DO IS ENABLE MULTILIB PACMAN REPO
+
+sudo nano /etc/pacman.conf
+
+# uncomment these lines
+
+# [multilib]
+# Include = /etc/pacman.d/mirrorlist
+
+# Update & install driver stack
+
+sudo pacman -Syu
+
+sudo pacman -S --needed nvidia-open-dkms linux-zen-headers nvidia-utils lib32-nvidia-utils nvidia-settings
+
+# STEP 2
+# Configure mkinitcpio.conf and add these modules.
+
+sudo nano /etc/mkinitcpio.conf
+
+# this is what the modules line should look like
+MODULES=(nvidia nvidia_modeset nvidia_uvm)
+
+# Step 3: Add NVIDIA Parameters
+
+# Create drop-in directory if missing
+sudo mkdir -p /etc/kernel/cmdline.d
+
+# Write NVIDIA params to a separate file (cannot overwrite root=)
+echo "nvidia_drm.modeset=1 nvidia_drm.fbdev=1" | sudo tee /etc/kernel/cmdline.d/nvidia.conf
+
+# Verify (optional but reassuring)
+cat /etc/kernel/cmdline.d/nvidia.conf
+
+# Step 4: Regenerate Initramfs & UKI
+# Rebuild initramfs
+sudo mkinitcpio -P
+
+# Rebuild UKI (auto-reads cmdline + drop-ins)
+sudo kernel-install add $(uname -r) /boot/vmlinuz-linux-zen
+
+# Verify UKI exists
+ls -lh /boot/EFI/Linux/*zen*.efi
+
+# sync bootloader and reboot
+
+sudo bootctl update
+reboot
+
+# Step 6: Post-Boot Validation
+
+lsmod      # Should list modules search for nvidia
+nvidia-smi               # Should show GPU info
+dmesg    # Should show info search for gpu info

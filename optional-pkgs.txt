@@ -1,0 +1,5 @@
+#  what i use gng
+
+librewolf #aur
+lact #pacmen
+# thats lowkey it for now i dont know what else to add.

@@ -1,0 +1,43 @@
+# Configure pacman for speed.
+
+sudo sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 10/' /etc/pacman.conf
+sudo sed -i 's/#Color/Color/' /etc/pacman.conf
+sudo sed -i 's/#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf
+
+# verify the changes took effect
+
+grep -E '^(ParallelDownloads|Color|VerbosePkgLists)' /etc/pacman.conf
+
+# optimize the mirror list with reflector.
+
+sudo pacman -S reflector
+
+sudo reflector --country 'Germany,France,Netherlands' --latest 10 --sort rate --save /etc/pacman.d/mirrorlist   # change country as needed
+
+sudo systemctl enable --now reflector.timer
+
+# enable ssd trim
+
+sudo systemctl enable --now fstrim.timer
+
+# Power profiles daemon (already installed via core-pkgs.txt)
+
+sudo systemctl enable --now power-profiles-daemon
+
+# Switch profiles:
+#   powerprofilesctl set performance   (before gaming)
+#   powerprofilesctl set balanced      (after gaming)
+#   powerprofilesctl list              (see available profiles)
+
+# keep your system clean
+
+# review orphans before removing (some may be intentionally kept)
+pacman -Qdtq
+# then remove if safe:
+# sudo pacman -Rns $(pacman -Qdtq)
+
+sudo pacman -S pacman-contrib
+
+sudo paccache -r
+
+sudo systemctl enable paccache.timer

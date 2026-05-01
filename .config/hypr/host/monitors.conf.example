@@ -1,0 +1,12 @@
+# Copy this to host/monitors.conf on each machine and edit for your displays.
+# Find your monitor names with: hyprctl monitors
+#
+# Syntax: monitor = NAME, RESOLUTION@Hz, POSITION, SCALE
+#
+# Examples:
+#   monitor = DP-1, 2560x1440@144, 0x0, 1
+#   monitor = HDMI-A-1, 1920x1080@60, 2560x0, 1
+#   monitor = eDP-1, preferred, auto, 1.5          # laptop HiDPI
+#   monitor = , preferred, auto, 1                  # catch-all fallback
+
+monitor = , preferred, auto, 1

@@ -1,0 +1,62 @@
+{
+    "layer": "top",
+    "position": "bottom",
+    "height": 28,
+    "spacing": 0,
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": ["tray", "wireplumber", "network", "power-profiles-daemon", "battery"],
+
+    "hyprland/workspaces": {
+        "format": "{id}"
+    },
+
+    "clock": {
+        "interval": 60,
+        "format": "{:%H:%M %d/%m}",
+        "format-alt": "{:%A, %B %d, %Y}",
+        "tooltip-format": "{:%H:%M:%S\n%d/%m/%Y}"
+    },
+
+    "wireplumber": {
+        "format": "VOL {volume}%",
+        "format-muted": "Mute",
+        "on-click": "kitty --class pulsemixer -e pulsemixer",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "on-scroll-up": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+",
+        "on-scroll-down": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%-"
+    },
+
+    "network": {
+        "interval": 5,
+        "format-wifi": "WIFI {signalStrength}%",
+        "format-ethernet": "ETH",
+        "format-disconnected": "NET Down",
+        "tooltip-format": "{ifname}: {ipaddr}",
+        "on-click": "kitty --class nmtui -e nmtui"
+    },
+
+    "battery": {
+        "interval": 10,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "BAT {capacity}%",
+        "format-charging": "BAT {capacity}% ⚡",
+        "format-plugged": "BAT {capacity}% ⚡",
+        "tooltip": false
+    },
+
+    "power-profiles-daemon": {
+        "format": "PWR {profile}",
+        "tooltip-format": "Power profile: {profile}\nLeft=perf  Middle=bal  Right=save",
+        "on-click-right": "powerprofilesctl set power-saver",
+        "on-click-middle": "powerprofilesctl set balanced",
+        "on-click": "powerprofilesctl set performance"
+    },
+
+    "tray": {
+        "show-passive-items": true
+    }
+}

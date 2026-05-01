@@ -1,0 +1,16 @@
+# Copy this to host/nvidia.conf if you have an NVIDIA GPU driving your display.
+# See: https://wiki.hyprland.org/Nvidia/
+#
+# NOTE: Remove or comment lines that cause issues. Not all are required.
+
+# NVIDIA environment variables
+# VA-API: hardware video decoding via NVIDIA
+env = LIBVA_DRIVER_NAME,nvidia
+# GLX: OpenGL rendering via NVIDIA
+env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+# VA-API backend: requires libva-nvidia-driver
+env = NVD_BACKEND,direct
+# GBM: DRM backend for NVIDIA. May cause Firefox crashes — remove if affected
+# env = GBM_BACKEND,nvidia-drm
+# Firefox: disable RDD sandbox for VA-API hw acceleration on NVIDIA
+env = MOZ_DISABLE_RDD_SANDBOX,1
