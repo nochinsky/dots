@@ -40,7 +40,7 @@ layout {
         width 1
     }
 
-    // Soft drop shadows (color comes from noctalia.kdl).
+    // Soft drop shadows using niri's default shadow color.
     shadow {
         on
         softness 24

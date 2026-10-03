@@ -21,6 +21,7 @@ were in the export/installer added for this repository.
 | “Separate modules” did not explain runtime theme writes | Installing Noctalia alone still enables templates that can edit other application configs later | Documented dependencies, theme ownership, opt-out, and cleanup behavior in module notes. Noctalia's defaults were retained. |
 | CI only checked generic syntax/data formats | It could miss valid TOML/KDL containing unsupported desktop settings | Added a separate Arch container job running actual niri and Noctalia validators. |
 | Greeter docs omitted custom keyring integration | Stock greetd lacks this machine's PAM entries for GNOME Keyring, affecting unlock and persisted clipboard data after login | Documented this host-side dependency without copying or changing system authentication files. |
+| Shadow comment claimed palette synchronization | The generated niri palette has no shadow color setting | Corrected the comment; shadows use niri's default color. |
 
 The first two findings are related: getting the login-shell environment right
 removes the need for a fixed service-level workaround. Upstream niri-session
