@@ -61,8 +61,13 @@ def main():
     if not args.home:
         config = Path(os.environ.get("XDG_CONFIG_HOME") or config).expanduser()
         state = Path(os.environ.get("XDG_STATE_HOME") or state).expanduser()
-    if not all(p.is_absolute() for p in (home, config, state)):
-        parser.error("Home and XDG paths must be absolute.")
+    noctalia_config = config
+    noctalia_state = state
+    if not args.home:
+        noctalia_config = Path(os.environ.get("NOCTALIA_CONFIG_HOME") or config).expanduser()
+        noctalia_state = Path(os.environ.get("NOCTALIA_STATE_HOME") or state).expanduser()
+    if not all(p.is_absolute() for p in (home, config, state, noctalia_config, noctalia_state)):
+        parser.error("Home, XDG, and Noctalia paths must be absolute.")
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
     backup = state / "dots/backups" / stamp
     wallpaper_dir = home / "Pictures/Wallpapers"
@@ -80,7 +85,8 @@ def main():
                 continue
             relative = source.relative_to(MODULES / module)
             if relative.parts[0] == ".config":
-                target = config.joinpath(*relative.parts[1:])
+                config_root = noctalia_config if module == "noctalia" else config
+                target = config_root.joinpath(*relative.parts[1:])
             else:
                 target = home / relative
             check_path(target)
@@ -99,7 +105,10 @@ def main():
             saved = backup / module / relative
             plan.append((module, source, target, saved, data))
 
-    gui_settings = state / "noctalia/settings.toml"
+    gui_settings = noctalia_state / "noctalia/settings.toml"
+    if "environment" in selected and (config / "systemd/user/niri.service.d/10-path.conf").exists():
+        print("Note: an existing niri PATH service drop-in remains in place. "
+              "Review docs/modules.md before your next login.")
     reset = args.reset_noctalia and os.path.lexists(gui_settings)
     if reset:
         check_path(gui_settings)
@@ -131,7 +140,8 @@ def main():
                 staged.append((temp, target, saved))
                 file.write(data)
             temp.chmod(source.stat().st_mode & 0o777)
-        backup.mkdir(parents=True, exist_ok=False)
+        # Backups can include private settings. Protect them even with umask 000.
+        backup.mkdir(mode=0o700, parents=True, exist_ok=False)
         manifest = []
         for temp, target, saved in staged:
             previous = os.path.lexists(target)
@@ -147,8 +157,10 @@ def main():
             changes.append((gui_settings, saved, True))
             shutil.move(str(gui_settings), str(saved))
             manifest.append({"target": str(gui_settings), "backup": str(saved)})
-        (backup / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    except Exception:
+        with open(backup / "manifest.json", "x", encoding="utf-8",
+                  opener=lambda path, flags: os.open(path, flags, 0o600)) as file:
+            file.write(json.dumps(manifest, indent=2) + "\n")
+    except BaseException:
         for target, saved, previous in reversed(changes):
             if saved.exists() or saved.is_symlink():
                 if target.exists() or target.is_symlink():
@@ -171,3 +183,6 @@ if __name__ == "__main__":
     except (OSError, ValueError) as error:
         print(f"Error: {error}", file=sys.stderr)
         sys.exit(1)
+    except KeyboardInterrupt:
+        print("Interrupted.", file=sys.stderr)
+        sys.exit(130)

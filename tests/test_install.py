@@ -131,6 +131,54 @@ class InstallerTests(unittest.TestCase):
         self.assertTrue(list((state / "dots/backups").glob("*/manifest.json")))
         self.assertFalse((self.home / ".config").exists())
 
+    def test_noctalia_overrides_use_their_own_config_and_state_roots(self):
+        config = self.home / "xdg-config"
+        state = self.home / "xdg-state"
+        noctalia_config = self.home / "shell-config"
+        noctalia_state = self.home / "shell-state"
+        gui = noctalia_state / "noctalia/settings.toml"
+        gui.parent.mkdir(parents=True)
+        gui.write_text('[theme]\nmode = "light"\n')
+        other_gui = state / "noctalia/settings.toml"
+        other_gui.parent.mkdir(parents=True)
+        other_gui.write_text("leave this profile alone")
+        env = dict(os.environ, HOME=str(self.home), XDG_CONFIG_HOME=str(config),
+                   XDG_STATE_HOME=str(state), NOCTALIA_CONFIG_HOME=str(noctalia_config),
+                   NOCTALIA_STATE_HOME=str(noctalia_state))
+        result = self.run_install("kitty", "noctalia", "--reset-noctalia", "--apply", home=False, env=env)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue((config / "kitty/kitty.conf").is_file())
+        self.assertTrue((noctalia_config / "noctalia/config.toml").is_file())
+        self.assertFalse((config / "noctalia/config.toml").exists())
+        self.assertFalse(gui.exists())
+        self.assertEqual(other_gui.read_text(), "leave this profile alone")
+        entries = json.loads(next((state / "dots/backups").glob("*/manifest.json")).read_text())
+        saved = next(entry for entry in entries if entry["target"] == str(gui))
+        self.assertEqual(Path(saved["backup"]).read_text(), '[theme]\nmode = "light"\n')
+
+    def test_backup_permissions_are_private_even_with_permissive_umask(self):
+        previous_umask = os.umask(0)
+        try:
+            result = self.run_install("starship", "--apply")
+        finally:
+            os.umask(previous_umask)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        manifest = self.manifests()[0]
+        self.assertEqual(manifest.parent.stat().st_mode & 0o777, 0o700)
+        self.assertEqual(manifest.stat().st_mode & 0o777, 0o600)
+
+    def test_noninteractive_shell_preserves_path_and_does_not_duplicate_entries(self):
+        result = self.run_install("bash", "--apply")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        env = dict(os.environ, HOME=str(self.home), PATH="/opt/custom/bin:/usr/bin:/bin")
+        result = subprocess.run(["/usr/bin/bash", "--noprofile", "--norc", "-c",
+                                 'source "$HOME/.bash_profile"; source "$HOME/.bashrc"; printf "%s" "$PATH"'],
+                                env=env, capture_output=True, text=True, check=True)
+        entries = result.stdout.split(":")
+        self.assertEqual(entries.count(str(self.home / ".local/bin")), 1)
+        self.assertEqual(entries.count(str(self.home / ".local/share/mise/shims")), 1)
+        self.assertIn("/opt/custom/bin", entries)
+
     def test_invalid_module_leaves_home_unchanged(self):
         result = self.run_install("kitty", "unknown", "--apply")
         self.assertNotEqual(result.returncode, 0)
@@ -147,6 +195,29 @@ class InstallerTests(unittest.TestCase):
                 INSTALL.main()
         self.assertEqual(target.read_text(), "original")
         self.assertEqual(list(target.parent.glob(".dots-*")), [])
+
+    def test_interrupt_after_a_replacement_rolls_back_the_transaction(self):
+        target = self.home / ".config/kitty/kitty.conf"
+        target.parent.mkdir(parents=True)
+        target.write_text("original")
+        real_replace = os.replace
+        calls = 0
+
+        def interrupt_second_replace(source, dest):
+            nonlocal calls
+            calls += 1
+            if calls == 2:
+                raise KeyboardInterrupt()
+            return real_replace(source, dest)
+
+        argv = ["install.py", "kitty", "--apply", "--home", str(self.home)]
+        with mock.patch.object(sys, "argv", argv), \
+             mock.patch.object(INSTALL.os, "replace", side_effect=interrupt_second_replace):
+            with self.assertRaises(KeyboardInterrupt):
+                INSTALL.main()
+        self.assertEqual(target.read_text(), "original")
+        self.assertFalse((target.parent / "themes/noctalia.conf").exists())
+        self.assertEqual(list(self.home.rglob(".dots-*")), [])
 
 
 if __name__ == "__main__":

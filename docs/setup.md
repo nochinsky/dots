@@ -37,6 +37,8 @@ python install.py all --apply
 
 Run as your normal user. Nothing invokes sudo, executes module scripts, reloads
 your running desktop, or enables services.
+Review [module notes](modules.md) for dependencies and Noctalia's later theme
+writes when you install only part of the desktop.
 
 The installer fills the two wallpaper placeholders in the Noctalia TOML with
 your home directory. To copy that config manually, replace `@WALLPAPER_DIR@`
@@ -55,6 +57,10 @@ This only removes `settings.toml`; clipboard data, notification history, and
 other state remain in place. Other TOML files already in the Noctalia config
 directory may also override values: review them before starting the session.
 See [Noctalia's config layering](https://docs.noctalia.dev/noctalia/configuration/).
+
+The installer also honors `NOCTALIA_CONFIG_HOME` and `NOCTALIA_STATE_HOME`
+when set. They take precedence over XDG directories for Noctalia's own files.
+`--home` ignores both sets of overrides for an isolated test installation.
 
 ## 3. Match your displays and keyboard
 
@@ -107,9 +113,10 @@ noctalia config validate
 ```
 
 Then log into the **niri** session in your display manager, or run
-`niri-session` from a TTY. The config starts Noctalia automatically. If you
-installed the `environment` service override, run `systemctl --user daemon-reload`
-before starting the next session. Avoid starting a second Noctalia instance.
+`niri-session` from a TTY. The config starts Noctalia automatically. Log in again
+for updated login-shell and user-service environments. Avoid starting a second
+Noctalia instance. See [migration notes](modules.md#shell-and-graphical-path) if
+you installed the previous fixed PATH service override.
 
 Noctalia's first-run assistant may appear on a fresh profile. Keep the imported
 theme/bar choices; changes made there or in Settings create GUI overrides.
@@ -135,6 +142,8 @@ files are snapshots; the shared template settings regenerate them.
 Each install creates a manifest in
 `~/.local/state/dots/backups/<timestamp>/manifest.json` (or your
 `XDG_STATE_HOME`). It records destination paths and original-file backups.
+The per-install directory is private (0700), and its manifest is 0600. This
+also protects original settings when the user's umask permits public reads.
 Restore those originals to the recorded destinations to undo replacements.
 For entries whose `backup` is `null`, remove the installed file if you no
 longer want it. Keep changes you made after installation before restoring.
@@ -159,6 +168,7 @@ noctalia config validate modules/noctalia/.config/noctalia/config.toml
 ```
 
 GitHub Actions runs the installer tests, data-format checks, documentation
-links, and shell syntax checks. The niri and Noctalia validators were run
-locally with the versions recorded in the README; they are not part of the
-Ubuntu CI job.
+links, and shell syntax checks. A separate Arch container job installs current
+niri and Noctalia packages and runs their semantic config validators. This
+catches incompatibilities with rolling releases; it does not boot a graphical
+session or test a complete OS install.

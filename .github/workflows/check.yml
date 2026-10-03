@@ -23,3 +23,15 @@ jobs:
         run: |
           bash -n modules/bash/.bashrc modules/bash/.bash_profile
           sh -n scripts/apply-gtk.sh
+
+  desktop-configs:
+    runs-on: ubuntu-latest
+    container: archlinux:base
+    steps:
+      - name: Install current Arch validators
+        run: pacman -Syu --needed --noconfirm git niri noctalia
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: niri and Noctalia semantics
+        run: |
+          niri validate -c modules/niri/.config/niri/config.kdl
+          noctalia config validate modules/noctalia/.config/noctalia/config.toml
