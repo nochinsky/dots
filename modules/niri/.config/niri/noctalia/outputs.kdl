@@ -1,0 +1,9 @@
+// Outputs use niri's automatic mode and scale selection by default.
+// Find connector names and modes with: niri msg outputs
+// My 2880x1800 laptop settings are in examples/laptop-outputs.kdl.
+// Uncomment and adjust to match your display:
+// output "eDP-1" {
+//     scale 1.5
+//     position x=0 y=0
+//     variable-refresh-rate on-demand=true
+// }

@@ -1,0 +1,25 @@
+// Built-in laptop display (Tianma TL140ADXP24-0, 2880x1800, 300x190mm).
+
+output "eDP-1" {
+    // `mode` is deliberately omitted. niri turns every output on with its
+    // preferred mode by default, and `niri msg outputs` reports
+    // 2880x1800@120.000 as this panel's preferred mode already, so hardcoding
+    // it only adds a string that must match to three decimal places or niri
+    // silently falls back to picking a mode itself.
+    //
+    // `scale` must stay explicit. When unset, niri guesses from physical size;
+    // at ~243 DPI on this panel that guess is 2.0, not the 1.5 we want.
+    scale 1.5
+
+    // Kept on purpose, though it looks redundant on a single-output laptop.
+    // niri's automatic layout sorts outputs by name, so with an external
+    // display attached DP-* would sort before eDP-1 and land at x=0, putting
+    // the external monitor on the LEFT. An explicit position makes eDP-1 the
+    // anchor at the origin and pushes everything else to its right.
+    position x=0 y=0
+
+    // On-demand VRR only engages for windows matched by a
+    // `variable-refresh-rate true` window rule. Without such a rule in
+    // config.kdl this flag stays dormant and VRR is never enabled.
+    variable-refresh-rate on-demand=true
+}

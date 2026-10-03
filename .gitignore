@@ -1,3 +1,8 @@
-.config/hypr/host/monitors.conf
-.config/hypr/host/nvidia.conf
-.config/hypr/.first-boot-done
+__pycache__/
+*.py[cod]
+.venv/
+*.bak
+*.bak-*
+*.swp
+*~
+.DS_Store

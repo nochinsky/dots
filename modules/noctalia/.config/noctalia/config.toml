@@ -1,0 +1,100 @@
+# Noctalia 5.2.1. GUI settings in ~/.local/state/noctalia/settings.toml win.
+# install.py fills the two wallpaper paths for the receiving user's home.
+
+[shell]
+polkit_agent = true
+panel_anchor_bar = "default"
+
+[shell.panel]
+transparency_mode = "soft"
+launcher_placement = "attached"
+clipboard_placement = "attached"
+polkit_placement = "attached"
+
+[theme]
+mode = "dark"
+source = "wallpaper"
+wallpaper_scheme = "m3-monochrome"
+
+[theme.templates]
+builtin_ids = ["gtk3", "gtk4", "kitty", "niri", "starship"]
+
+[wallpaper]
+directory = "@WALLPAPER_DIR@"
+
+[wallpaper.default]
+path = "@WALLPAPER@"
+
+[backdrop]
+enabled = true
+blur_intensity = 0.5
+tint_intensity = 0.3
+
+[hot_corners.top_left]
+action = "launcher"
+
+[idle]
+# Lock and blank together after five minutes; idle does not suspend.
+behavior_order = ["lock", "screen-off"]
+
+[idle.behavior.lock]
+action = "lock"
+enabled = true
+timeout = 300
+
+[idle.behavior.screen-off]
+action = "screen_off"
+enabled = true
+timeout = 300
+
+[battery]
+warning_threshold = 15
+
+[bar.default]
+thickness = 32
+background_opacity = 0.72
+radius = 14
+border = "outline"
+border_width = 1
+padding = 12
+widget_spacing = 6
+capsule = true
+capsule_fill = "surface_variant"
+capsule_opacity = 0.6
+capsule_radius = 10
+capsule_padding = 8
+start = ["group:g2"]
+center = ["media", "clock"]
+end = ["group:g1"]
+
+[[bar.default.capsule_group]]
+id = "g1"
+members = ["tray", "notifications", "network", "volume", "battery"]
+fill = "surface_variant"
+opacity = 0.6
+padding = 8.0
+radius = 10.0
+enabled = true
+accordion = false
+accordion_direction = "end"
+
+[[bar.default.capsule_group]]
+id = "g2"
+members = ["control-center", "workspaces"]
+fill = "surface_variant"
+opacity = 0.6
+padding = 8.0
+radius = 10.0
+enabled = true
+accordion = false
+accordion_direction = "end"
+
+[widget.network]
+show_label = false
+vpn_status = "hidden"
+
+[widget.media]
+hide_when_no_media = true
+
+[widget.notifications]
+hide_when_no_unread = true

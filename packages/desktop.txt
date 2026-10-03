@@ -1,0 +1,26 @@
+# Arch repository packages for the desktop, theming, audio, and portals.
+adw-gtk-theme
+adwaita-icon-theme
+git
+gnome-keyring
+inter-font
+kitty
+nautilus
+niri
+noctalia
+noto-fonts-cjk
+noto-fonts-emoji
+pipewire
+pipewire-alsa
+pipewire-pulse
+power-profiles-daemon
+python
+starship
+ttf-firacode-nerd
+ttf-nerd-fonts-symbols
+upower
+wireplumber
+xdg-desktop-portal-gnome
+xdg-desktop-portal-gtk
+xdg-utils
+xwayland-satellite

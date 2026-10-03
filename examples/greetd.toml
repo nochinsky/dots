@@ -1,0 +1,7 @@
+# Optional /etc/greetd/config.toml; read docs/setup.md before using.
+[terminal]
+vt = 1
+
+[default_session]
+user = "greeter"
+command = "/usr/bin/noctalia-greeter-session"

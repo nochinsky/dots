@@ -1,0 +1,162 @@
+// KDL format: https://kdl.dev
+// Full option reference: https://niri-wm.github.io/niri/Configuration:-Introduction
+
+gestures {
+    // Noctalia has its own hot corners, so niri's stay off.
+    hot-corners {
+        off
+    }
+}
+
+input {
+    keyboard {
+        // Keyboard layout comes from org.freedesktop.locale1 (see localectl).
+        numlock
+    }
+
+    touchpad {
+        tap
+        natural-scroll
+    }
+
+    mouse {
+        accel-profile "flat"
+    }
+
+    // Warp the pointer to the newly focused window.
+    warp-mouse-to-focus
+
+    // Focus follows the pointer.
+    focus-follows-mouse
+}
+
+layout {
+    // The wallpaper layer sits behind everything.
+    background-color "transparent"
+    gaps 10
+
+    // Thin ring around the focused window (colors come from noctalia.kdl).
+    focus-ring {
+        width 1
+    }
+
+    // Soft drop shadows (color comes from noctalia.kdl).
+    shadow {
+        on
+        softness 24
+        spread 4
+        offset x=0 y=5
+    }
+}
+
+// Blurred wallpaper backdrop in the overview.
+layer-rule {
+    match namespace="^noctalia-backdrop"
+    place-within-backdrop true
+}
+
+overview {
+    // No shadows on workspaces while the overview is open.
+    workspace-shadow {
+        off
+    }
+}
+
+environment {
+    XDG_CURRENT_DESKTOP "niri"
+}
+
+// Don't show the hotkey popup at login.
+hotkey-overlay {
+    skip-at-startup
+}
+
+// Ask apps to drop their own titlebars so niri draws the decorations.
+prefer-no-csd
+
+animations {
+    workspace-switch {
+        spring damping-ratio=0.72 stiffness=620 epsilon=0.0001
+    }
+    window-open {
+        duration-ms 110
+        curve "ease-out-expo"
+    }
+    window-close {
+        duration-ms 90
+        curve "ease-out-quad"
+    }
+    horizontal-view-movement {
+        spring damping-ratio=0.82 stiffness=520 epsilon=0.0001
+    }
+    window-movement {
+        spring damping-ratio=0.78 stiffness=430 epsilon=0.0001
+    }
+    window-resize {
+        spring damping-ratio=0.82 stiffness=480 epsilon=0.0001
+    }
+    config-notification-open-close {
+        spring damping-ratio=0.70 stiffness=900 epsilon=0.001
+    }
+    overview-open-close {
+        spring damping-ratio=0.80 stiffness=850 epsilon=0.0001
+    }
+}
+
+// Rounded windows and focus rings. Clipping also trims client-side shadows.
+// If an app draws menus outside its window bounds, override it with a later rule:
+//     window-rule { match app-id="^that-app$"; clip-to-geometry false; }
+window-rule {
+    geometry-corner-radius 20
+    clip-to-geometry true
+}
+
+// GNOME apps (Nautilus etc.): no solid background behind the focus ring.
+window-rule {
+    match app-id=r#"^org\.gnome\."#
+    draw-border-with-background false
+}
+
+// File manager opens floating.
+window-rule {
+    match app-id=r#"^org\.gnome\.Nautilus$"#
+    open-floating true
+}
+
+// Terminal: no solid background behind the focus ring.
+window-rule {
+    match app-id="kitty"
+    draw-border-with-background false
+}
+
+// Noctalia's settings window floats at a usable size.
+window-rule {
+    match app-id="dev.noctalia.Noctalia"
+    open-floating true
+    default-column-width { fixed 1080; }
+    default-window-height { fixed 920; }
+}
+
+// Lets Noctalia activate windows and trigger notification actions.
+debug {
+    honor-xdg-activation-with-invalid-serial
+}
+
+// Alt+Tab switches windows; Mod+Tab opens the overview.
+recent-windows {
+    binds {
+        Alt+Tab         { next-window scope="output"; }
+        Alt+Shift+Tab   { previous-window scope="output"; }
+        Alt+grave       { next-window filter="app-id"; }
+        Alt+Shift+grave { previous-window filter="app-id"; }
+    }
+}
+
+include "noctalia/outputs.kdl"
+include "noctalia/binds.kdl"
+
+// Noctalia writes this file itself; colors follow the active palette.
+include "noctalia.kdl"
+
+// Start Noctalia with the session.
+spawn-at-startup "noctalia"
