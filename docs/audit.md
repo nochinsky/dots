@@ -20,6 +20,7 @@ were in the export/installer added for this repository.
 | Ctrl+C bypassed rollback | An interrupted replacement sequence could leave a partial installation | Rollback now handles interruption; a test interrupts after one successful replacement. |
 | “Separate modules” did not explain runtime theme writes | Installing Noctalia alone still enables templates that can edit other application configs later | Documented dependencies, theme ownership, opt-out, and cleanup behavior in module notes. Noctalia's defaults were retained. |
 | CI only checked generic syntax/data formats | It could miss valid TOML/KDL containing unsupported desktop settings | Added a separate Arch container job running actual niri and Noctalia validators. |
+| Greeter docs omitted custom keyring integration | Stock greetd lacks this machine's PAM entries for GNOME Keyring, affecting unlock and persisted clipboard data after login | Documented this host-side dependency without copying or changing system authentication files. |
 
 The first two findings are related: getting the login-shell environment right
 removes the need for a fixed service-level workaround. Upstream niri-session
@@ -48,6 +49,11 @@ by the repo audit.
   preference explicitly uses `Adwaita Sans 11`. Both work. If one font across
   all UI surfaces is the goal, choose it in both places. Fontconfig fallback
   rules do not override every explicit application font preference.
+- **Keyring login integration:** the live greetd PAM file is modified from
+  its packaged version and includes GNOME Keyring authentication/session
+  entries. The live login journal reports an unlocked login keyring. A fresh
+  machine must configure equivalent integration for its chosen login manager;
+  see [the upstream keyring guide](https://docs.noctalia.dev/noctalia/configuration/secret-service/).
 - **Static optional palettes:** Fastfetch and `kdeglobals` are snapshots;
   enabled Noctalia templates do not keep those two synchronized with changing
   wallpapers. `kdeglobals` also does not select a Qt platform-theme plugin.

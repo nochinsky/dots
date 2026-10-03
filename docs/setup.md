@@ -133,6 +133,15 @@ After checking the installed session command, adapt
 single display manager and enable it yourself. When the shell is running,
 `noctalia msg greeter-sync` syncs its appearance to the greeter.
 
+Automatic GNOME Keyring unlock also needs login-session/PAM integration; merely
+installing the package is not enough. This machine's `/etc/pam.d/greetd` has
+custom `pam_gnome_keyring.so` authentication and `auto_start` session entries
+that the stock greetd package lacks. This repo does not install those system
+authentication changes. Configure your chosen login manager's keyring
+integration, and check that your default keyring unlocks at login. Otherwise
+Noctalia's encrypted clipboard history may be unavailable until it is unlocked.
+See [Noctalia's keyring guide](https://docs.noctalia.dev/noctalia/configuration/secret-service/).
+
 ## Changes, backups, and removal
 
 Configs are copies: edit the installed files freely, then copy intentional
