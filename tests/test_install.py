@@ -100,7 +100,7 @@ class InstallerTests(unittest.TestCase):
         wallpaper = Path(config["wallpaper"]["default"]["path"])
         self.assertTrue(wallpaper.is_file())
         self.assertEqual(wallpaper.read_bytes(),
-                         (ROOT / "modules/wallpaper/Pictures/Wallpapers/neon-exzm3l.png").read_bytes())
+                         (ROOT / "modules/wallpaper/Pictures/Wallpapers/scenery-96l5xd.png").read_bytes())
         self.assertFalse((self.home / "README.md").exists())
         self.assertFalse((self.home / "apply.sh").exists())
 

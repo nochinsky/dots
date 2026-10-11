@@ -1,35 +1,35 @@
 binds {
     // App shortcuts
-    Mod+E hotkey-overlay-title="File Manager" { spawn "nautilus"; }
+    Mod+E repeat=false hotkey-overlay-title="File Manager" { spawn "nautilus"; }
 
-    Ctrl+Shift+Escape hotkey-overlay-title="Task Manager" { spawn-sh "noctalia msg panel-toggle control-center system"; }
+    Ctrl+Shift+Escape repeat=false hotkey-overlay-title="Task Manager" { spawn "noctalia" "msg" "panel-toggle" "control-center" "system"; }
     // No workspace-rename bind yet (Noctalia doesn't expose one).
-    Ctrl+XF86AudioLowerVolume allow-when-locked=true { spawn-sh "noctalia msg media previous"; }
-    Ctrl+XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "noctalia msg media next"; }
-    Mod+L hotkey-overlay-title="Lock Screen" { spawn-sh "noctalia msg session lock"; }
-    Mod+I hotkey-overlay-title="Settings" { spawn-sh "noctalia msg settings-toggle"; }
-    Mod+D hotkey-overlay-title="Control Center" { spawn-sh "noctalia msg panel-toggle control-center"; }
-    Mod+P hotkey-overlay-title="Power Menu: Toggle" { spawn-sh "noctalia msg panel-toggle session"; }
+    Ctrl+XF86AudioLowerVolume repeat=false allow-when-locked=true { spawn "noctalia" "msg" "media" "previous"; }
+    Ctrl+XF86AudioRaiseVolume repeat=false allow-when-locked=true { spawn "noctalia" "msg" "media" "next"; }
+    Mod+L repeat=false hotkey-overlay-title="Lock Screen" { spawn "noctalia" "msg" "session" "lock"; }
+    Mod+I repeat=false hotkey-overlay-title="Settings" { spawn "noctalia" "msg" "settings-toggle"; }
+    Mod+D repeat=false hotkey-overlay-title="Control Center" { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
+    Mod+P repeat=false hotkey-overlay-title="Power Menu: Toggle" { spawn "noctalia" "msg" "panel-toggle" "session"; }
     // No notepad bind yet (Noctalia doesn't expose one).
-    Mod+Space hotkey-overlay-title="Application Launcher" { spawn-sh "noctalia msg panel-toggle launcher"; }
-    Mod+V hotkey-overlay-title="Clipboard Manager" { spawn-sh "noctalia msg panel-toggle clipboard"; }
-    Mod+W hotkey-overlay-title="Next Wallpaper" { spawn-sh "noctalia msg wallpaper-next"; }
-    Mod+Shift+W hotkey-overlay-title="Random Wallpaper" { spawn-sh "noctalia msg wallpaper-random"; }
-    Mod+O hotkey-overlay-title="OSD" { spawn-sh "noctalia msg osd-toggle"; }
+    Mod+Space repeat=false hotkey-overlay-title="Application Launcher" { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    Mod+V repeat=false hotkey-overlay-title="Clipboard Manager" { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
+    Mod+W repeat=false hotkey-overlay-title="Next Wallpaper" { spawn "noctalia" "msg" "wallpaper-next"; }
+    Mod+Shift+W repeat=false hotkey-overlay-title="Random Wallpaper" { spawn "noctalia" "msg" "wallpaper-random"; }
+    Mod+O repeat=false hotkey-overlay-title="OSD" { spawn "noctalia" "msg" "osd-toggle"; }
     // Keeps the screen awake: holds an idle inhibitor, so the 5-minute
     // screen-off in ~/.config/noctalia/config.toml is suspended while active.
-    Mod+Shift+C hotkey-overlay-title="Caffeine: Toggle" { spawn-sh "noctalia msg caffeine-toggle"; }
+    Mod+Shift+C repeat=false hotkey-overlay-title="Caffeine: Toggle" { spawn "noctalia" "msg" "caffeine-toggle"; }
     // Media keys (also work while locked)
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "noctalia msg volume-down"; }
-    XF86AudioMicMute allow-when-locked=true { spawn-sh "noctalia msg mic-mute"; }
-    XF86AudioMute allow-when-locked=true { spawn-sh "noctalia msg volume-mute"; }
-    XF86AudioNext allow-when-locked=true { spawn-sh "noctalia msg media next"; }
-    XF86AudioPause allow-when-locked=true { spawn-sh "noctalia msg media toggle"; }
-    XF86AudioPlay allow-when-locked=true { spawn-sh "noctalia msg media toggle"; }
-    XF86AudioPrev allow-when-locked=true { spawn-sh "noctalia msg media previous"; }
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "noctalia msg volume-up"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "noctalia msg brightness-down"; }
-    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "noctalia msg brightness-up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-down"; }
+    XF86AudioMicMute repeat=false allow-when-locked=true { spawn "noctalia" "msg" "mic-mute"; }
+    XF86AudioMute repeat=false allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
+    XF86AudioNext repeat=false allow-when-locked=true { spawn "noctalia" "msg" "media" "next"; }
+    XF86AudioPause repeat=false allow-when-locked=true { spawn "noctalia" "msg" "media" "toggle"; }
+    XF86AudioPlay repeat=false allow-when-locked=true { spawn "noctalia" "msg" "media" "toggle"; }
+    XF86AudioPrev repeat=false allow-when-locked=true { spawn "noctalia" "msg" "media" "previous"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "noctalia" "msg" "brightness-down"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "noctalia" "msg" "brightness-up"; }
     Mod+1 { focus-workspace 1; }
     Mod+2 { focus-workspace 2; }
     Mod+3 { focus-workspace 3; }
@@ -58,8 +58,8 @@ binds {
     Mod+Shift+Page_Up { move-workspace-up; }
     Mod+WheelScrollDown cooldown-ms=150 { focus-workspace-down; }
     Mod+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
-    Alt+Print { spawn-sh "noctalia msg screenshot-region"; }
-    Alt+XF86Launch1 { spawn-sh "noctalia msg screenshot-region"; }
+    Alt+Print repeat=false { spawn "noctalia" "msg" "screenshot-region"; }
+    Alt+XF86Launch1 repeat=false { spawn "noctalia" "msg" "screenshot-region"; }
     Mod+BracketLeft { consume-or-expel-window-left; }
     Mod+BracketRight { consume-or-expel-window-right; }
     Mod+C { center-column; }
@@ -73,10 +73,10 @@ binds {
     Mod+Down { focus-window-down; }
     Mod+End { focus-column-last; }
     Mod+Equal { set-column-width "+10%"; }
-    Mod+F { fullscreen-window; }
+    Mod+F repeat=false { fullscreen-window; }
     Mod+Home { focus-column-first; }
     Mod+Left { focus-column-left; }
-    Mod+M { maximize-column; }
+    Mod+M repeat=false { maximize-column; }
     Mod+Minus { set-column-width "-10%"; }
     Mod+Period { expel-window-from-column; }
     Mod+Q repeat=false { close-window; }
@@ -88,23 +88,23 @@ binds {
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+R { switch-preset-window-height; }
     Mod+Shift+Right { move-column-right; }
-    Mod+T hotkey-overlay-title="Toggle Floating" { toggle-window-floating; }
+    Mod+T repeat=false hotkey-overlay-title="Toggle Floating" { toggle-window-floating; }
     Mod+Shift+Up { move-window-up; }
-    Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+    Mod+Shift+V repeat=false { switch-focus-between-floating-and-tiling; }
     Mod+Shift+WheelScrollDown { focus-column-right; }
     Mod+Shift+WheelScrollUp { focus-column-left; }
     Mod+Up { focus-window-up; }
     Mod+WheelScrollLeft { focus-column-left; }
     Mod+WheelScrollRight { focus-column-right; }
-    Mod+Y { toggle-column-tabbed-display; }
-    Mod+Shift+P { spawn-sh "noctalia msg dpms-off"; }
-    Ctrl+Print { spawn-sh "noctalia msg screenshot-fullscreen"; }
-    Ctrl+XF86Launch1 { spawn-sh "noctalia msg screenshot-fullscreen"; }
-    Print { spawn-sh "noctalia msg screenshot-region"; }
-    XF86Launch1 { spawn-sh "noctalia msg screenshot-region"; }
-    Mod+Shift+Q hotkey-overlay-title="Quit Niri" { quit; }
-    Mod+Return hotkey-overlay-title="Open Terminal" { spawn "kitty"; }
-    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
-    Mod+Shift+Slash { show-hotkey-overlay; }
+    Mod+Y repeat=false { toggle-column-tabbed-display; }
+    Mod+Shift+P repeat=false { spawn "noctalia" "msg" "dpms-off"; }
+    Ctrl+Print repeat=false { spawn "noctalia" "msg" "screenshot-fullscreen"; }
+    Ctrl+XF86Launch1 repeat=false { spawn "noctalia" "msg" "screenshot-fullscreen"; }
+    Print repeat=false { spawn "noctalia" "msg" "screenshot-region"; }
+    XF86Launch1 repeat=false { spawn "noctalia" "msg" "screenshot-region"; }
+    Mod+Shift+Q repeat=false hotkey-overlay-title="Quit Niri" { quit; }
+    Mod+Return repeat=false hotkey-overlay-title="Open Terminal" { spawn "kitty"; }
+    Mod+Escape repeat=false allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+    Mod+Shift+Slash repeat=false { show-hotkey-overlay; }
     Mod+Tab repeat=false { toggle-overview; }
 }

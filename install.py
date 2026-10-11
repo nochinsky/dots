@@ -73,7 +73,7 @@ def main():
     wallpaper_dir = home / "Pictures/Wallpapers"
     replacements = {
         '"@WALLPAPER_DIR@"': json.dumps(str(wallpaper_dir), ensure_ascii=False),
-        '"@WALLPAPER@"': json.dumps(str(wallpaper_dir / "neon-exzm3l.png"), ensure_ascii=False),
+        '"@WALLPAPER@"': json.dumps(str(wallpaper_dir / "scenery-96l5xd.png"), ensure_ascii=False),
     }
     plan = []
     seen = set()

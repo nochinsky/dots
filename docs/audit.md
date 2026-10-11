@@ -110,7 +110,6 @@ A container config validator cannot verify those interactions. The installer
 is not crash/power-loss atomic, and it does not automatically delete retired
 files or restore later edits made by applications.
 
-The earlier screenshot predates the final bar/GTK adjustments, as its README
-caption states. Replacing it with a new clean screenshot would improve visual
-accuracy. Wallpaper redistribution rights remain unverified; see
+The README screenshot was refreshed on October 12, 2026 with the current
+wallpaper and bar. Wallpaper redistribution rights remain unverified; see
 [credits](credits.md).

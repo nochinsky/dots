@@ -17,9 +17,4 @@ output "eDP-1" {
     // the external monitor on the LEFT. An explicit position makes eDP-1 the
     // anchor at the origin and pushes everything else to its right.
     position x=0 y=0
-
-    // On-demand VRR only engages for windows matched by a
-    // `variable-refresh-rate true` window rule. Without such a rule in
-    // config.kdl this flag stays dormant and VRR is never enabled.
-    variable-refresh-rate on-demand=true
 }

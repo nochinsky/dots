@@ -2,7 +2,7 @@
 // Full option reference: https://niri-wm.github.io/niri/Configuration:-Introduction
 
 gestures {
-    // Noctalia has its own hot corners, so niri's stay off.
+    // Keep hot corners off for a minimal, keyboard-driven setup.
     hot-corners {
         off
     }

@@ -7,9 +7,8 @@
 - [Inter](https://rsms.me/inter/), [Fira Code](https://github.com/tonsky/FiraCode),
   [Nerd Fonts](https://www.nerdfonts.com/), and [Noto](https://notofonts.github.io/) — fonts.
 
-Wallpaper: [Wallhaven #exzm3l](https://wallhaven.cc/w/exzm3l), uploaded by
-**moonamoon**. The bundled PNG matches that source byte for byte. Uploader
-credit does not establish the original artist or a redistribution license.
+Wallpaper: [Wallhaven #96l5xd](https://wallhaven.cc/w/96l5xd), uploaded by
+**RevanLord**. Uploader credit does not establish a redistribution license.
 The wallpaper and artwork shown in screenshots are excluded from this
 repository's MIT license; their creators retain their rights.
 
