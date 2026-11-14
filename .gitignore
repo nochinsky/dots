@@ -1,8 +1,5 @@
-__pycache__/
-*.py[cod]
-.venv/
-*.bak
-*.bak-*
-*.swp
-*~
 .DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~

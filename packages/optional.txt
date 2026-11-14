@@ -1,0 +1,8 @@
+bat
+btop
+fastfetch
+fd
+fzf
+mise
+neovim
+ripgrep

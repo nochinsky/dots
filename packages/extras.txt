@@ -1,9 +1,0 @@
-# Optional terminal tools. The configs are separate modules.
-bat
-btop
-fastfetch
-fd
-fzf
-mise
-neovim
-ripgrep

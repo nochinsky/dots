@@ -1,7 +1,5 @@
-# Arch repository packages for the desktop, theming, audio, and portals.
 adw-gtk-theme
 adwaita-icon-theme
-git
 gnome-keyring
 inter-font
 kitty
@@ -14,7 +12,6 @@ pipewire
 pipewire-alsa
 pipewire-pulse
 power-profiles-daemon
-python
 starship
 ttf-firacode-nerd
 ttf-nerd-fonts-symbols

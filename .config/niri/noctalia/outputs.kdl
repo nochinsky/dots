@@ -1,0 +1,7 @@
+// Outputs use niri's automatic mode and scale selection unless configured here.
+// List connectors and modes with: niri msg outputs
+// Example for a 2880x1800 laptop panel at 1.5 scale: examples/laptop-outputs.kdl
+// output "eDP-1" {
+//     scale 1.5
+//     position x=0 y=0
+// }

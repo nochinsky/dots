@@ -1,5 +1,5 @@
 # Noctalia 5.2.1. GUI settings in ~/.local/state/noctalia/settings.toml win.
-# install.py fills the two wallpaper paths for the receiving user's home.
+# Wallpaper paths use ~/ so they follow whichever home directory this is copied to.
 
 [shell]
 polkit_agent = true
@@ -20,10 +20,11 @@ wallpaper_scheme = "m3-monochrome"
 builtin_ids = ["gtk3", "gtk4", "kitty", "niri", "starship"]
 
 [wallpaper]
-directory = "@WALLPAPER_DIR@"
+# Empty means the picker browses your XDG Pictures directory (~/Pictures).
+directory = ""
 
 [wallpaper.default]
-path = "@WALLPAPER@"
+path = "~/Pictures/Wallpapers/scenery-96l5xd.webp"
 
 [backdrop]
 enabled = true
