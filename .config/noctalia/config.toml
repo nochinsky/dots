@@ -1,40 +1,36 @@
-# Noctalia 5.2.1. GUI settings in ~/.local/state/noctalia/settings.toml win.
-# Wallpaper paths use ~/ so they follow whichever home directory this is copied to.
+# Noctalia v5 config
 
-[shell]
-polkit_agent = true
-panel_anchor_bar = "default"
-
-[shell.panel]
-transparency_mode = "soft"
-launcher_placement = "attached"
-clipboard_placement = "attached"
-polkit_placement = "attached"
-
-[theme]
-mode = "dark"
-source = "wallpaper"
-wallpaper_scheme = "m3-monochrome"
-
-[theme.templates]
-builtin_ids = ["gtk3", "gtk4", "kitty", "niri", "starship"]
-
-[wallpaper]
-# Empty means the picker browses your XDG Pictures directory (~/Pictures).
-directory = ""
-
-[wallpaper.default]
-path = "~/Pictures/Wallpapers/scenery-96l5xd.webp"
-
+# Blurred wallpaper behind the overview.
 [backdrop]
 enabled = true
 blur_intensity = 0.5
 tint_intensity = 0.3
 
+# Use Noctalia's own polkit agent (polkit-gnome not needed).
+[shell]
+polkit_agent = true
+
+# Idle behaviours: lock and screen off only, deliberately NO suspend.
+#
+# The intended split is: going idle never sleeps the machine, but closing the
+# lid does. Lid-close suspend is logind's own default (HandleLidSwitch=suspend)
+# and nothing here overrides it.
+#
+# Locking still happens before that lid suspend: Noctalia holds a `sleep` delay
+# inhibitor named "Lock before sleep" (see `systemd-inhibit --list`), so the
+# session is locked on the way down without a separate idle behaviour.
+#
+# There is intentionally no [idle.behavior.suspend] below. Adding one would
+# make going idle sleep the machine, which is not wanted.
 [idle]
-# Lock and blank together after five minutes; idle does not suspend.
+# Evaluation order (and the order Settings -> Idle lists them in).
 behavior_order = ["lock", "screen-off"]
 
+# Lock and blank at the SAME 5-minute mark, on purpose. The panel used to blank
+# at 5 minutes with nothing ever locking, so waking it dropped you into an open
+# session. Blinding at 5 and only locking at 10 would leave exactly that hole
+# for 5 minutes, so both happen together.
+# Noctalia drives screen-off through niri's own DPMS and restores it on input.
 [idle.behavior.lock]
 action = "lock"
 enabled = true
@@ -45,44 +41,96 @@ action = "screen_off"
 enabled = true
 timeout = 300
 
-[battery]
-warning_threshold = 15
+# ---------------------------------------------------------------------------
+# Optional: also suspend on idle, but only when on battery.
+#
+# Not enabled. If you ever want idle to sleep the machine on battery while
+# leaving it running forever on external power, add this block back and list
+# "suspend" in behavior_order above. The hook is still installed and tested; it
+# reads BAT0/status and returns without suspending whenever the machine is on
+# external power, including USB-C PD charging, which a plain AC0 check misses.
+#
+#   [idle.behavior.suspend]
+#   action = "command"
+#   command = "/home/ektor/.local/bin/noctalia-idle-suspend"
+#   timeout = 900
+#
+#   behavior_order = ["lock", "screen-off", "suspend"]
+# ---------------------------------------------------------------------------
 
+# ===========================================================================
+# Bar appearance
+#
+# Appearance, widget lanes, and capsule groups are defined in this file.
+# GUI-managed ~/.local/state/noctalia/settings.toml merges afterward and wins
+# if the same setting is later changed through the GUI.
+# ===========================================================================
 [bar.default]
-thickness = 32
+# Was a solid 34px slab at full opacity. Slimmer and frosted instead.
+thickness          = 32
 background_opacity = 0.72
+
 # Compositor blur is enabled by default; no explicit override is needed.
-radius = 14
-border = "outline"
-border_width = 1
-padding = 12
-widget_spacing = 6
-capsule = true
-capsule_fill = "surface_variant"
+# Noctalia requests blur when ext-background-effect-v1 is available.
+radius             = 14
+border             = "outline_variant"
+border_width       = 1
+padding            = 12
+widget_spacing     = 6
+
+# Standalone widgets inherit this capsule style.
+# The status widgets below share one capsule group.
+capsule         = true
+capsule_fill    = "surface_container"
 capsule_opacity = 0.6
-capsule_radius = 10
+capsule_radius  = 10
 capsule_padding = 8
-start = ["workspaces"]
-center = ["media", "clock"]
-end = ["group:g1"]
+
+# Widget lanes. A lane entry is either a widget name or "group:<id>", which
+# refers to one of the [[bar.default.capsule_group]] tables below.
+#
+# `wallpaper` was dropped from the start lane: Mod+W / Mod+Shift+W already
+# cycle and randomise the wallpaper, so the widget was a redundant capsule.
+start  = [ "workspaces" ]
+center = [ "media", "clock" ]
+end    = [ "group:g1" ]
+
+# Capsule groups: several widgets rendered inside ONE shared capsule.
+#
+# These are normally authored by dragging widgets onto each other in
+# Settings -> Bar -> Bar Widgets, which writes them to the app-managed
+# ~/.local/state/noctalia/settings.toml. They were moved here deliberately so
+# the whole bar -- appearance, lanes AND grouping -- lives in this one file and
+# survives a reinstall or a dotfiles migration. The settings.toml copies were
+# deleted.
+#
+# Caveat: settings.toml still merges last and wins. If you edit grouping in the
+# GUI, Noctalia writes a fresh group table there, which overrides these and
+# makes them inert. Re-running the move (or deleting that block from
+# settings.toml) restores this file as the source of truth.
 
 [[bar.default.capsule_group]]
-id = "g1"
-members = ["tray", "notifications", "network", "volume", "battery"]
-fill = "surface_variant"
-opacity = 0.6
-padding = 8.0
-radius = 10.0
-enabled = true
-accordion = false
+id                  = "g1"
+members             = [ "tray", "notifications", "network", "volume", "battery" ]
+fill                = "surface_container"
+opacity             = 0.6
+padding             = 8.0
+radius              = 10.0
+enabled             = true
+accordion           = false
 accordion_direction = "end"
 
+# ===========================================================================
+# Widget fixes
+# ===========================================================================
+
+# The network widget defaults to show_label = true, which printed the entire
+# SSID ("The one with the WIFI new") across the bar. Icon only; the network
+# name still shows in the hover tooltip and in the control center.
 [widget.network]
 show_label = false
-vpn_status = "hidden"
 
+# The media widget defaults to keeping its placeholder visible, which parked
+# "Nothing Playing" in the centre of the bar whenever nothing was playing.
 [widget.media]
 hide_when_no_media = true
-
-[widget.notifications]
-hide_when_no_unread = true
