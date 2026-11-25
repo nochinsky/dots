@@ -3,12 +3,14 @@ binds {
     Mod+E repeat=false hotkey-overlay-title="File Manager" { spawn "nautilus"; }
 
     Ctrl+Shift+Escape repeat=false hotkey-overlay-title="Task Manager" { spawn "noctalia" "msg" "panel-toggle" "control-center" "system"; }
+    // No workspace-rename bind yet (Noctalia doesn't expose one).
     Ctrl+XF86AudioLowerVolume repeat=false allow-when-locked=true { spawn "noctalia" "msg" "media" "previous"; }
     Ctrl+XF86AudioRaiseVolume repeat=false allow-when-locked=true { spawn "noctalia" "msg" "media" "next"; }
     Mod+L repeat=false hotkey-overlay-title="Lock Screen" { spawn "noctalia" "msg" "session" "lock"; }
     Mod+I repeat=false hotkey-overlay-title="Settings" { spawn "noctalia" "msg" "settings-toggle"; }
     Mod+D repeat=false hotkey-overlay-title="Control Center" { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
     Mod+P repeat=false hotkey-overlay-title="Power Menu: Toggle" { spawn "noctalia" "msg" "panel-toggle" "session"; }
+    // No notepad bind yet (Noctalia doesn't expose one).
     Mod+Space repeat=false hotkey-overlay-title="Application Launcher" { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
     Mod+V repeat=false hotkey-overlay-title="Clipboard Manager" { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
     Mod+W repeat=false hotkey-overlay-title="Next Wallpaper" { spawn "noctalia" "msg" "wallpaper-next"; }

@@ -40,7 +40,7 @@ layout {
         width 1
     }
 
-    // Soft drop shadows using niri's default shadow color.
+    // Soft drop shadows (color comes from noctalia.kdl).
     shadow {
         on
         softness 24
@@ -103,8 +103,20 @@ animations {
     }
 }
 
-// Rounded windows and focus rings. Clipping also trims client-side shadows.
-// If an app draws menus outside its window bounds, override it with a later rule:
+// Rounded window corners, matching Noctalia's own rounded surfaces.
+// This is the one recommendation from Noctalia's niri guide that wasn't
+// already present here (the backdrop layer-rule, transparent background,
+// workspace-shadow off, settings-window rule and the activation debug flag
+// all were).
+//
+// `clip-to-geometry` is what actually rounds the window itself. On its own,
+// `geometry-corner-radius` would only round the focus ring and border to
+// match, which with the 1px ring above would leave a rounded outline floating
+// around a square window. Clipping also trims client-side shadows, which is
+// harmless here because `prefer-no-csd` is set.
+//
+// If some app ever draws menus that escape its window bounds and get cut off,
+// override just that app with a later rule:
 //     window-rule { match app-id="^that-app$"; clip-to-geometry false; }
 window-rule {
     geometry-corner-radius 20
@@ -155,8 +167,8 @@ recent-windows {
 include "noctalia/outputs.kdl"
 include "noctalia/binds.kdl"
 
-// Noctalia writes this file itself; colors follow the active palette.
-include "noctalia.kdl"
-
 // Start Noctalia with the session.
 spawn-at-startup "noctalia"
+
+// Noctalia writes this file itself; colors follow the active palette.
+include "noctalia.kdl"

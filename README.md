@@ -18,7 +18,7 @@ The repo mirrors `$HOME`. There is no installer: copy only the files you want.
 | GTK and Qt colors | `.config/gtk-3.0/`, `.config/gtk-4.0/`, `.config/kdeglobals` | `adw-gtk-theme`, `adwaita-icon-theme` |
 | System info | `.config/fastfetch/` | `fastfetch` |
 | Shell | `.bashrc`, `.bash_profile` | `mise`, `fzf` (optional) |
-| Full desktop | everything above, plus `.config/niri/`, `.config/noctalia/`, `.config/environment.d/`, `Pictures/` | [`packages/base.txt`](packages/base.txt) |
+| Full desktop | everything above, plus `.config/niri/`, `.config/noctalia/`, `.config/environment.d/`, `.config/systemd/user/niri.service.d/`, `Pictures/` | [`packages/base.txt`](packages/base.txt) |
 
 ## Full install
 
